@@ -13,6 +13,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import axios from 'axios';
 import AdminHeader from "./AdminHeader/adminheader";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#ffbb28", "#00C49F"];
@@ -56,6 +57,18 @@ const topStores = [
 ];
 const topSales = [874, 721, 599, 558, 496, 344, 271, 213, 193, 171];
 
+const handleChangeKpi = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/admin/stats`);
+    const data = response.data;
+  } catch (error) {
+    console.error("Error fetching KPI data:", error);
+  }
+  alert("KPI data refreshed!");
+  console.log("KPI data fetched successfully");
+};
+
 export default function InventoryDashboard() {
   const cards = [
     { label: "Total Products", value: 5483 },
@@ -87,7 +100,9 @@ export default function InventoryDashboard() {
         {/* Overview Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {cards.map((card) => (
-            <div key={card.label} className="bg-white p-4 rounded shadow text-center">
+            <div key={card.label}
+            onClick={handleChangeKpi}
+            className="bg-white p-4 rounded cursor-pointer shadow text-center">
               <h2 className="text-lg sm:text-xl font-bold">
                 <CountUp end={card.value} duration={3} separator="," />
               </h2>
