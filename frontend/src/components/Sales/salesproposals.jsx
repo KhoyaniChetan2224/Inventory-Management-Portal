@@ -3,6 +3,7 @@ import axios from 'axios';
 import SalesHeader from './SalesHeader/salesheader';
 import { User } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend } from 'recharts';
+import CountUp from 'react-countup';
 
 const chartData = [
   { day: 'Sun', income: 1200, expense: 800 },
@@ -81,6 +82,13 @@ const SalesProposals = () => {
     }
   };
 
+  const cards = [
+    { label: "Income", value: 8500, change: "+12.5%", color: "text-green-600" },
+    { label: "Expense", value: 4900, change: "-8.3%", color: "text-red-600" },
+    { label: "Savings", value: 2000, change: "+5%", color: "text-green-600" },
+    { label: "Investment", value: 1600, change: "+3.6%", color: "text-green-600" },
+  ];
+
   return (
     <div className="flex h-screen font-sans">
       <SalesHeader />
@@ -108,15 +116,19 @@ const SalesProposals = () => {
 
           {/* Overview Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            {[
-              { label: 'Income', value: '$8,500', change: '+12.5%', color: 'text-green-600' },
-              { label: 'Expense', value: '$4,900', change: '-8.3%', color: 'text-red-600' },
-              { label: 'Savings', value: '$2,000', change: '+5%', color: 'text-green-600' },
-              { label: 'Investment', value: '$1,600', change: '+3.6%', color: 'text-green-600' },
-            ].map((card, i) => (
+            {cards.map((card, i) => (
               <div key={i} className="bg-white/45 p-4 rounded-xl shadow text-sm">
                 <h4 className="text-gray-500">{card.label}</h4>
-                <div className="text-xl font-bold">{card.value}</div>
+
+                <div className="text-xl font-bold">
+                  $
+                  <CountUp
+                    end={card.value}
+                    duration={3}
+                    separator=","
+                  />
+                </div>
+
                 <p className={`mt-1 font-semibold text-xs ${card.color}`}>
                   {card.change} from last week
                 </p>
